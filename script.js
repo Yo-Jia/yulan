@@ -138,21 +138,3 @@ downloadBtn.addEventListener("click", function () {
   link.click();
 });
 
-shareFb.addEventListener("click", function () {
-  let downloadUrl = photoCanvas.toDataURL("image/png");
-  console.log(downloadUrl);
-  window.open(
-    "https://work.workplace.com/sharer.php?display=popup&u=" +
-      encodeURIComponent(
-        "https://interactive-examples.mdn.mozilla.net/media/examples/plumeria.jpg"
-      ),
-    "sharer",
-    "toolbar=0,status=0,resizable=1,width=626,height=436"
-  );
-});
-
-shareIg.addEventListener("click", function () {
-  alert(
-    "Direct sharing to Instagram from a website is not officially supported. Please download the image and share manually."
-  );
-});
