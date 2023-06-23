@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photo Overlay App</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<nav>
+    <img src="" alt="">
+</nav>
+    <div id="container">
+        <div id="capture-box">
+            
+            <video id="video" autoplay></video>
+            <canvas id="gifCanvas"></canvas>
+            <button id="snap"></button>
+            <canvas id="photoCanvas" style="display: none;"></canvas>
+
+        </div>
+        <div id="btn-box">
+            <button id="retake" class="button-17" style="display: none;">重新拍照</button>
+            <button id="download" class="button-17" style="display: none;" >下載照片</button>
+            <!-- <button id="shareFb">Share to Facebook</button>
+            <button id="shareIg">Share to Instagram</button> -->
+        </div>
+    </div>
+
+    </div>
+    
+    <script src="node_modules/gifler/gifler.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
