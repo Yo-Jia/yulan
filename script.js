@@ -5,10 +5,11 @@ let snap = document.getElementById("snap");
 let retake = document.getElementById("retake");
 let downloadBtn = document.getElementById("download");
 
+
 let context = photoCanvas.getContext("2d");
 window.addEventListener("resize", handleResize);
 
-
+console.log("connected")
 
 function drawFrame(ctx) {
   let relativeFrameThickness = frameThickness * (window.innerWidth / photoCanvas.width);
