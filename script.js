@@ -24,7 +24,7 @@ function handleResize() {
 
   // Redraw the frames
   drawFrame(context, frameThickness, frameColor); // For photoCanvas
-  gifler("/fish.gif").frames(
+  gifler("./fish.gif").frames(
     gifCanvas,
     function (ctx, frame) {
       ctx.drawImage(frame.buffer, 0, 0, gifCanvas.width, gifCanvas.height);
@@ -60,7 +60,7 @@ video.addEventListener("loadedmetadata", function () {
 
 
 // Handle gif overlay with gifler
-gifler("/fish.gif").frames(
+gifler("./fish.gif").frames(
   gifCanvas,
   function (ctx, frame) {
     ctx.drawImage(frame.buffer, 0, 0, gifCanvas.width, gifCanvas.height);
