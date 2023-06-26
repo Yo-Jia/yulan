@@ -14,8 +14,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
     .getUserMedia({
       video: {
-        width: { min: gifCanvas.width, max: gifCanvas.width },
-        height: { min: gifCanvas.height, max: gifCanvas.height },
+        width: { ideal: gifCanvas.width },
+                    height: { ideal: gifCanvas.height },
         facingMode: "environment",
       },
     })
@@ -37,26 +37,26 @@ document.getElementById("switchCamera").addEventListener("click", function () {
   switchCamera();
 });
 
-function switchCamera() {
+function switchCamera(){
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    // Only stop tracks if a stream exists
-    // if(video.srcObject) {
-    //     // Stop all video streams.
-    //     video.srcObject.getTracks().forEach(track => track.stop());
-    // }
+      // Only stop tracks if a stream exists
+      let srcObject = video.srcObject;
+      if(srcObject) {
+          srcObject.getTracks().forEach(track => track.stop());
+      }
 
-    navigator.mediaDevices
-      .getUserMedia({
-        video: {
-          width: { min: gifCanvas.width, max: gifCanvas.width  },
-          height: { min: gifCanvas.height, max: gifCanvas.height  },
-          facingMode: currentCamera,
-        },
-      })
-      .then(function (stream) {
-        video.srcObject = stream;
-        video.play();
-      });
+      navigator.mediaDevices
+          .getUserMedia({
+              video: {
+                width: { ideal: gifCanvas.width },
+                height: { ideal: gifCanvas.height },
+                  facingMode: currentCamera,
+              }
+          })
+          .then(function (stream) {
+              video.srcObject = stream;
+              video.play();
+          });
   }
 }
 
