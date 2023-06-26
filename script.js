@@ -43,7 +43,6 @@ function switchCamera() {
 }
 
 // Call switchCamera once at the start to initialise the video.
-switchCamera();
 
 
 console.log("connected");
@@ -92,6 +91,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     .then(function (stream) {
       video.srcObject = stream;
       video.play();
+      switchCamera();
     });
 }
 
