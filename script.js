@@ -10,6 +10,21 @@ let frameColor = "#ffffff";
 let context = photoCanvas.getContext("2d");
 window.addEventListener("resize", handleResize);
 
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices
+    .getUserMedia({
+      video: {
+        width: { ideal: 1920 },
+        height: { ideal: 1080 },
+      },
+    })
+    .then(function (stream) {
+      video.srcObject = stream;
+      video.play();
+      // switchCamera();
+    });
+}
+
 let currentCamera = 'user'; // Start with the user-facing camera
 
 document.getElementById("switchCamera").addEventListener("click", function () {
@@ -26,10 +41,10 @@ document.getElementById("switchCamera").addEventListener("click", function () {
   function switchCamera() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // Only stop tracks if a stream exists
-        if(video.srcObject) {
-            // Stop all video streams.
-            video.srcObject.getTracks().forEach(track => track.stop());
-        }
+        // if(video.srcObject) {
+        //     // Stop all video streams.
+        //     video.srcObject.getTracks().forEach(track => track.stop());
+        // }
 
         navigator.mediaDevices
             .getUserMedia({
@@ -85,20 +100,7 @@ function handleResize() {
 }
 
 // Get access to the camera
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  navigator.mediaDevices
-    .getUserMedia({
-      video: {
-        width: { ideal: 1920 },
-        height: { ideal: 1080 },
-      },
-    })
-    .then(function (stream) {
-      video.srcObject = stream;
-      video.play();
-      // switchCamera();
-    });
-}
+
 
 video.addEventListener("loadedmetadata", function () {
   let dpr = window.devicePixelRatio || 1;
