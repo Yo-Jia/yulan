@@ -1,24 +1,6 @@
 {
   "dependencies": {
     "gifler": "^0.1.0"
-  },
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-  "name": "capture_fish",
-  "version": "1.0.0",
-  "main": "script.js",
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Yo-Jia/yulan.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Yo-Jia/yulan/issues"
-  },
-  "homepage": "https://github.com/Yo-Jia/yulan#readme",
-  "description": ""
+}
+  
 }
