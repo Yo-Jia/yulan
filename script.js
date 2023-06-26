@@ -14,8 +14,9 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
     .getUserMedia({
       video: {
-        width: { ideal: 1920 },
-        height: { ideal: 1080 },
+        width: { min: gifCanvas.width, max: gifCanvas.width },
+        height: { min: gifCanvas.height, max: gifCanvas.height },
+        facingMode: "environment",
       },
     })
     .then(function (stream) {
@@ -25,45 +26,41 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     });
 }
 
-let currentCamera = 'user'; // Start with the user-facing camera
+let currentCamera = "user"; // Start with the user-facing camera
 
 document.getElementById("switchCamera").addEventListener("click", function () {
-    if (currentCamera === 'user') {
-        currentCamera = 'environment';
-    } else {
-        currentCamera = 'user';
-    }
-    switchCamera();
+  if (currentCamera === "user") {
+    currentCamera = "environment";
+  } else {
+    currentCamera = "user";
+  }
+  switchCamera();
 });
 
+function switchCamera() {
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    // Only stop tracks if a stream exists
+    // if(video.srcObject) {
+    //     // Stop all video streams.
+    //     video.srcObject.getTracks().forEach(track => track.stop());
+    // }
 
-  
-  function switchCamera() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Only stop tracks if a stream exists
-        // if(video.srcObject) {
-        //     // Stop all video streams.
-        //     video.srcObject.getTracks().forEach(track => track.stop());
-        // }
-
-        navigator.mediaDevices
-            .getUserMedia({
-                video: {
-                    width: { ideal: 1920 },
-                    height: { ideal: 1080 },
-                    facingMode: currentCamera
-                }
-            })
-            .then(function (stream) {
-                video.srcObject = stream;
-                video.play();
-            });
-    }
-
+    navigator.mediaDevices
+      .getUserMedia({
+        video: {
+          width: { min: gifCanvas.width, max: gifCanvas.width  },
+          height: { min: gifCanvas.height, max: gifCanvas.height  },
+          facingMode: currentCamera,
+        },
+      })
+      .then(function (stream) {
+        video.srcObject = stream;
+        video.play();
+      });
+  }
 }
 
 // Call switchCamera once at the start to initialise the video.
-
 
 console.log("connected");
 
@@ -101,20 +98,19 @@ function handleResize() {
 
 // Get access to the camera
 
-
 video.addEventListener("loadedmetadata", function () {
   let dpr = window.devicePixelRatio || 1;
-  
+
   // get dimensions from parent container
   const container = video.parentElement;
   photoCanvas.width = container.offsetWidth * dpr;
   photoCanvas.height = container.offsetHeight * dpr;
   gifCanvas.width = container.offsetWidth * dpr;
   gifCanvas.height = container.offsetHeight * dpr;
-  
+
   context = photoCanvas.getContext("2d");
   context.scale(dpr, dpr);
-  handleResize()
+  handleResize();
 });
 
 // Handle gif overlay with gifler
@@ -146,7 +142,6 @@ snap.addEventListener("click", function () {
   photoCanvas.height = video.videoHeight;
   context.drawImage(video, 0, 0, photoCanvas.width, photoCanvas.height);
   context.drawImage(gifCanvas, 0, 0, photoCanvas.width, photoCanvas.height);
-
 
   photoCanvas.style.display = "block";
   container.classList.add("scale-down");
