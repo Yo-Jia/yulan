@@ -1,187 +1,202 @@
 let video = document.getElementById("video");
-let gifCanvas = document.getElementById("gifCanvas");
-let photoCanvas = document.getElementById("photoCanvas");
-let snap = document.getElementById("snap");
-let retake = document.getElementById("retake");
-let downloadBtn = document.getElementById("download");
-let frameThickness = 10;
-let frameColor = "#ffffff";
-let logoImage = new Image();
-logoImage.src = "logo.png";
-let likeImage = new Image();
-likeImage.src = "like.png";
+    let gifCanvas = document.getElementById("gifCanvas");
+    let photoCanvas = document.getElementById("photoCanvas");
+    let snap = document.getElementById("snap");
+    let retake = document.getElementById("retake");
+    let downloadBtn = document.getElementById("download");
+    let frameThickness = 10;
+    let frameColor = "#ffffff";
+    let logoImage = new Image();
+    logoImage.src = "logo.png";
+    let likeImage = new Image();
+    likeImage.src = "like.png";
+    let context = photoCanvas.getContext("2d");
 
-let context = photoCanvas.getContext("2d");
-window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
 
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  navigator.mediaDevices
-    .getUserMedia({
-      video: {
-        width: { ideal: gifCanvas.width },
-        facingMode: "environment",
-      },
-    })
-    .then(function (stream) {
-      video.srcObject = stream;
-      video.play();
-      // switchCamera();
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices
+            .getUserMedia({
+                video: {
+                    width: { ideal: gifCanvas.width },
+                    facingMode: "environment",
+                },
+            })
+            .then(function (stream) {
+                video.srcObject = stream;
+                video.play();
+            });
+    }
+
+    let currentCamera = "user"; // Start with the user-facing camera
+
+    document.getElementById("switchCamera").addEventListener("click", function () {
+        if (currentCamera === "user") {
+            currentCamera = "environment";
+        } else {
+            currentCamera = "user";
+        }
+        switchCamera();
     });
-}
 
-let currentCamera = "user"; // Start with the user-facing camera
+    function switchCamera() {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            let srcObject = video.srcObject;
+            if (srcObject) {
+                srcObject.getTracks().forEach(track => track.stop());
+            }
 
-document.getElementById("switchCamera").addEventListener("click", function () {
-  if (currentCamera === "user") {
-    currentCamera = "environment";
-  } else {
-    currentCamera = "user";
-  }
-  switchCamera();
-});
+            navigator.mediaDevices
+                .getUserMedia({
+                    video: {
+                        width: { ideal: gifCanvas.width },
+                        facingMode: currentCamera,
+                    }
+                })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                    video.play();
+                });
+        }
+    }
 
-function switchCamera(){
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      // Only stop tracks if a stream exists
-      let srcObject = video.srcObject;
-      if(srcObject) {
-          srcObject.getTracks().forEach(track => track.stop());
-      }
+    console.log("connected");
 
-      navigator.mediaDevices
-          .getUserMedia({
-              video: {
-                width: { ideal: gifCanvas.width },
-                  facingMode: currentCamera,
-              }
-          })
-          .then(function (stream) {
-              video.srcObject = stream;
-              video.play();
-          });
-  }
-}
+    function drawFrame(ctx) {
+        let relativeFrameThickness = frameThickness;
+        ctx.fillStyle = frameColor;
+        ctx.fillRect(0, 0, ctx.canvas.width, relativeFrameThickness); // Top border
+        ctx.fillRect(
+            0,
+            ctx.canvas.height - relativeFrameThickness,
+            ctx.canvas.width,
+            relativeFrameThickness + 100
+        ); // Bottom border
+        ctx.fillRect(0, 0, relativeFrameThickness, ctx.canvas.height); // Left border
+        ctx.fillRect(
+            ctx.canvas.width - relativeFrameThickness,
+            0,
+            relativeFrameThickness,
+            ctx.canvas.height
+        ); // Right border
+    }
 
-// Call switchCamera once at the start to initialise the video.
+    function handleResize() {
+        let dpr = window.devicePixelRatio || 2;
+        let containerWidth = video.parentElement.offsetWidth * dpr;
+        let containerHeight = video.parentElement.offsetHeight * dpr;
+        let videoAspectRatio = video.videoWidth / video.videoHeight;
 
-console.log("connected");
+        let canvasWidth, canvasHeight;
+        if (containerWidth / containerHeight > videoAspectRatio) {
+            canvasWidth = containerHeight * videoAspectRatio;
+            canvasHeight = containerHeight;
+        } else {
+            canvasWidth = containerWidth;
+            canvasHeight = containerWidth / videoAspectRatio;
+        }
 
-function drawFrame(ctx) {
-  let relativeFrameThickness = frameThickness;
-  ctx.fillStyle = frameColor;
-  ctx.fillRect(0, 0, ctx.canvas.width, relativeFrameThickness); // Top border
-  ctx.fillRect(
-    0,
-    ctx.canvas.height - relativeFrameThickness,
-    ctx.canvas.width,
-    relativeFrameThickness + 100
-  ); // Bottom border
-  ctx.fillRect(0, 0, relativeFrameThickness, ctx.canvas.height); // Left border
-  ctx.fillRect(
-    ctx.canvas.width - relativeFrameThickness,
-    0,
-    relativeFrameThickness,
-    ctx.canvas.height
-  ); // Right border
-}
+        photoCanvas.width = canvasWidth;
+        photoCanvas.height = canvasHeight;
+        gifCanvas.width = canvasWidth;
+        gifCanvas.height = canvasHeight;
 
-function handleResize() {
-  // Redraw the frames
-  drawFrame(context); // Redraw the frames for photoCanvas
-  // gifler("fish.gif").frames(
-  //   gifCanvas,
-  //   function (ctx, frame) {
-  //     ctx.drawImage(frame.buffer, 0, 0, gifCanvas.width, gifCanvas.height);
-  //     drawFrame(ctx); // For gifCanvas
-  //   },
-  //   true
-  // );
-}
+        context = photoCanvas.getContext("2d");
+        context.scale(dpr, dpr);
+        handleResize();
+    }
 
-// Get access to the camera
+    video.addEventListener("loadedmetadata", function () {
+        let dpr = window.devicePixelRatio || 1;
 
-video.addEventListener("loadedmetadata", function () {
-  let dpr = window.devicePixelRatio || 1;
+        let videoAspectRatio = video.videoWidth / video.videoHeight;
 
-  // get dimensions from parent container
-  const container = video.parentElement;
-  photoCanvas.width = container.offsetWidth * dpr;
-  photoCanvas.height = container.offsetHeight * dpr;
-  gifCanvas.width = container.offsetWidth * dpr;
-  gifCanvas.height = container.offsetHeight * dpr;
+        const container = video.parentElement;
+        let containerWidth = container.offsetWidth * dpr;
+        let containerHeight = container.offsetHeight * dpr;
 
-  context = photoCanvas.getContext("2d");
-  context.scale(dpr, dpr);
-  handleResize();
-});
+        let canvasWidth, canvasHeight;
+        if (containerWidth / containerHeight > videoAspectRatio) {
+            canvasWidth = containerHeight * videoAspectRatio;
+            canvasHeight = containerHeight;
+        } else {
+            canvasWidth = containerWidth;
+            canvasHeight = containerWidth / videoAspectRatio;
+        }
 
-// Handle gif overlay with gifler
-gifler("fish.gif").frames(
-  gifCanvas,
-  function (ctx, frame) {
-    ctx.canvas.width = gifCanvas.width;
-    ctx.canvas.height = gifCanvas.height;
-    ctx.drawImage(frame.buffer, 0, 0, gifCanvas.width, gifCanvas.height);
-    // Draw the Polaroid frame
-    let frameThickness = 10; // Adjust as needed
-    let frameColor = "#ffffff"; // Adjust as needed
-    ctx.fillStyle = frameColor;
-    ctx.fillRect(0, 0, gifCanvas.width, frameThickness); // Top border
-    ctx.fillRect(0, gifCanvas.height - 200, gifCanvas.width, 200); // Bottom border
-    ctx.fillRect(0, 0, frameThickness, gifCanvas.height); // Left border
-    ctx.fillRect(
-      gifCanvas.width - frameThickness,
-      0,
-      frameThickness,
-      gifCanvas.height
-    ); // Right border
+        photoCanvas.width = canvasWidth;
+        photoCanvas.height = canvasHeight;
+        gifCanvas.width = canvasWidth;
+        gifCanvas.height = canvasHeight;
 
-    // Draw the logo image
-    let logoWidth = 350; // Adjust the logo size as needed
-    let logoHeight = 480;
-    let logoX = gifCanvas.width - logoWidth - 50; // Adjust the margin as needed
-    let logoY = gifCanvas.height - logoHeight - 10; // Adjust the margin as needed
-    ctx.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight);
+        context = photoCanvas.getContext("2d");
+        context.scale(dpr, dpr);
+        handleResize();
+    });
 
-        // Draw the like image
-        let likeWidth = 100; // Adjust the logo size as needed
-        let likeHeight = 100;
-        let likeX = gifCanvas.width - likeWidth - 150; // Adjust the margin as needed
-        let likeY = gifCanvas.height - likeHeight - logoHeight - 10; // Adjust the margin as needed
-        ctx.drawImage(likeImage, likeX, likeY, likeWidth, likeHeight);
-  },
-  true
-);
-// Trigger photo take
-snap.addEventListener("click", function () {
-  photoCanvas.width = video.videoWidth;
-  photoCanvas.height = video.videoHeight;
-  context.drawImage(video, 0, 0, photoCanvas.width, photoCanvas.height);
-  context.drawImage(gifCanvas, 0, 0, photoCanvas.width, photoCanvas.height);
+    gifler("fish.gif").frames(
+        gifCanvas,
+        function (ctx, frame) {
+            ctx.canvas.width = gifCanvas.width;
+            ctx.canvas.height = gifCanvas.height;
+            ctx.drawImage(frame.buffer, 0, 0, gifCanvas.width, gifCanvas.height);
+            let frameThickness = 10;
+            let frameColor = "#ffffff";
+            ctx.fillStyle = frameColor;
+            ctx.fillRect(0, 0, gifCanvas.width, frameThickness); // Top border
+            ctx.fillRect(0, gifCanvas.height - 200, gifCanvas.width, 200); // Bottom border
+            ctx.fillRect(0, 0, frameThickness, gifCanvas.height); // Left border
+            ctx.fillRect(
+                gifCanvas.width - frameThickness,
+                0,
+                frameThickness,
+                gifCanvas.height
+            ); // Right border
 
-  photoCanvas.style.display = "block";
-  container.classList.add("scale-down");
-  video.style.display = "none";
-  gifCanvas.style.display = "none";
-  snap.style.display = "none";
-  retake.style.display = "block";
-  downloadBtn.style.display = "block";
-});
+            let logoWidth = 350;
+            let logoHeight = 480;
+            let logoX = gifCanvas.width - logoWidth - 50;
+            let logoY = gifCanvas.height - logoHeight - 10;
+            ctx.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight);
 
-retake.addEventListener("click", function () {
-  video.style.display = "block";
-  gifCanvas.style.display = "block";
-  photoCanvas.style.display = "none";
-  snap.style.display = "block";
-  retake.style.display = "none";
-  downloadBtn.style.display = "none";
-  container.classList.remove("scale-down");
-});
+            let likeWidth = 100;
+            let likeHeight = 100;
+            let likeX = gifCanvas.width - likeWidth - 150;
+            let likeY = gifCanvas.height - likeHeight - logoHeight - 10;
+            ctx.drawImage(likeImage, likeX, likeY, likeWidth, likeHeight);
+        },
+        true
+    );
 
-downloadBtn.addEventListener("click", function () {
-  let downloadUrl = photoCanvas.toDataURL("image/png");
-  let link = document.createElement("a");
-  link.href = downloadUrl;
-  link.download = "image.png";
-  link.click();
-});
+    snap.addEventListener("click", function () {
+        photoCanvas.width = video.videoWidth;
+        photoCanvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, photoCanvas.width, photoCanvas.height);
+        context.drawImage(gifCanvas, 0, 0, photoCanvas.width, photoCanvas.height);
+
+        photoCanvas.style.display = "block";
+        container.classList.add("scale-down");
+        video.style.display = "none";
+        gifCanvas.style.display = "none";
+        snap.style.display = "none";
+        retake.style.display = "block";
+        downloadBtn.style.display = "block";
+    });
+
+    retake.addEventListener("click", function () {
+        video.style.display = "block";
+        gifCanvas.style.display = "block";
+        photoCanvas.style.display = "none";
+        snap.style.display = "block";
+        retake.style.display = "none";
+        downloadBtn.style.display = "none";
+        container.classList.remove("scale-down");
+    });
+
+    downloadBtn.addEventListener("click", function () {
+        let downloadUrl = photoCanvas.toDataURL("image/png");
+        let link = document.createElement("a");
+        link.href = downloadUrl;
+        link.download = "image.png";
+        link.click();
+    });

@@ -5,12 +5,10 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffd8d8;
 }
-#capture-box{
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffd8d8;
-    display: flex;
-    position: relative;
+#capture-box {
+  position: relative;
+  width: 100%;
+  padding-bottom: 75%; /* Adjust the aspect ratio as needed */
 }
 
 #container{
@@ -22,11 +20,16 @@ body {
     flex-direction: column;
 }
 
-#video, #gifCanvas, #photoCanvas {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
+#video,
+#gifCanvas,
+#photoCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
   #gifcanvas{
     object-fit: cover;
