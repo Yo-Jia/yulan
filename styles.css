@@ -7,7 +7,7 @@ body {
 }
 #capture-box{
     width: 100vw;
-    height: 80vh;
+    height: 100vh;
     background-color: #ffd8d8;
     display: flex;
     position: relative;
@@ -28,12 +28,14 @@ body {
     height: 100%;
     object-fit: contain;
   }
+
+  #gifcanvas{
+    object-fit: cover;
+  }
   #photoCanvas {
     object-fit: contain;
   }
-#video{
-  object-fit:cover ;
-}
+
 #snap {
     position: absolute;
     bottom:2rem;

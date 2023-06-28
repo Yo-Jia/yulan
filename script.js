@@ -107,8 +107,8 @@ video.addEventListener("loadedmetadata", function () {
   const container = video.parentElement;
   photoCanvas.width = container.offsetWidth * dpr;
   photoCanvas.height = container.offsetHeight * dpr;
-  gifCanvas.width = container.offsetWidth * dpr;
-  gifCanvas.height = container.offsetHeight * dpr;
+  // gifCanvas.width = container.offsetWidth * dpr;
+  // gifCanvas.height = container.offsetHeight * dpr;
 
   context = photoCanvas.getContext("2d");
   context.scale(dpr, dpr);
