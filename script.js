@@ -11,6 +11,7 @@ let video = document.getElementById("video");
     let likeImage = new Image();
     likeImage.src = "like.png";
     let context = photoCanvas.getContext("2d");
+    let switchBtn=document.getElementById("switchCamera")
 
     window.addEventListener("resize", handleResize);
 
@@ -178,6 +179,7 @@ let video = document.getElementById("video");
         container.classList.add("scale-down");
         video.style.display = "none";
         gifCanvas.style.display = "none";
+        switchBtn.style.display = "none";
         snap.style.display = "none";
         retake.style.display = "block";
         downloadBtn.style.display = "block";
@@ -188,8 +190,10 @@ let video = document.getElementById("video");
         gifCanvas.style.display = "block";
         photoCanvas.style.display = "none";
         snap.style.display = "block";
+        switchBtn.style.display="block";
         retake.style.display = "none";
         downloadBtn.style.display = "none";
+        
         container.classList.remove("scale-down");
     });
 

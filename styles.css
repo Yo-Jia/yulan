@@ -5,6 +5,9 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffd8d8;
 }
+
+
+
 #capture-box {
   position: relative;
   width: 100%;
@@ -57,7 +60,7 @@ body {
 
 #switchCamera{
   position: absolute;
-  top:20px;
+  top:100px;
   right: 20px;
   border-radius: 50%;
   width:100px;
