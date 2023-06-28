@@ -30,7 +30,9 @@ body {
   #photoCanvas {
     object-fit: contain;
   }
-
+#video{
+  object-fit:cover ;
+}
 #snap {
     position: absolute;
     bottom:2rem;

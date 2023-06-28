@@ -18,8 +18,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
     .getUserMedia({
       video: {
-        width: { min: gifCanvas.width },
-        height: { ideal: gifCanvas.height},
+        width: { ideal: gifCanvas.width },
         facingMode: "environment",
       },
     })
@@ -53,7 +52,6 @@ function switchCamera(){
           .getUserMedia({
               video: {
                 width: { ideal: gifCanvas.width },
-                height: { ideal: gifCanvas.height },
                   facingMode: currentCamera,
               }
           })
