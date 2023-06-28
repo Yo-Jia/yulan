@@ -26,14 +26,15 @@ body {
 #capture-box {
   position: relative;
   width: 100%;
-  padding-bottom: 75%; /* Adjust the aspect ratio as needed */
+    padding-bottom: 75%; /* Adjust the aspect ratio as needed */
+
 }
 
 #container{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100vw;
+    height: 80vh;
     flex-direction: column;
 }
 
