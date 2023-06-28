@@ -82,7 +82,7 @@ let video = document.getElementById("video");
     }
 
     function handleResize() {
-        let dpr = window.devicePixelRatio || 2;
+        let dpr = window.devicePixelRatio || 10;
         let containerWidth = video.parentElement.offsetWidth * dpr;
         let containerHeight = video.parentElement.offsetHeight * dpr;
         let videoAspectRatio = video.videoWidth / video.videoHeight;
