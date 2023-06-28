@@ -57,11 +57,6 @@ let video = document.getElementById("video");
                 .then(function (stream) {
                     video.srcObject = stream;
                     video.play();
-                    if (currentCamera === "user") {
-                        video.classList.add('flipped');
-                    } else {
-                        video.classList.remove('flipped');
-                    }
                 });
         }
     }
