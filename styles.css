@@ -41,8 +41,8 @@ body {
     bottom:2rem;
     left: 45%;
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border: #e3e1e1 solid 5px;
     background-color: #c2c2c2;
     background-image: url('camera.png');
@@ -58,13 +58,13 @@ body {
   top:20px;
   right: 20px;
   border-radius: 50%;
-  width:50px;
-  height: 50px;
+  width:100px;
+  height: 100px;
   border: none;
   background-color: rgba(255, 255, 255, 0.301);
   background-image: url('switch-camera.png');
   background-repeat: no-repeat;
-  background-size: 30px;
+  background-size: 50px;
   background-position: center;
   color: #fff;
   box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
