@@ -169,8 +169,8 @@ let video = document.getElementById("video");
     );
 
     snap.addEventListener("click", function () {
-        photoCanvas.width = video.videoWidth;
-        photoCanvas.height = video.videoHeight;
+        photoCanvas.width = video.videoWidth * 10;
+        photoCanvas.height = video.videoHeight * 10;
         context.drawImage(video, 0, 0, photoCanvas.width, photoCanvas.height);
         context.drawImage(gifCanvas, 0, 0, photoCanvas.width, photoCanvas.height);
 
