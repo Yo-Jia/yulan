@@ -6,6 +6,10 @@ let retake = document.getElementById("retake");
 let downloadBtn = document.getElementById("download");
 let frameThickness = 10;
 let frameColor = "#ffffff";
+let logoImage = new Image();
+logoImage.src = "logo.png";
+let likeImage = new Image();
+likeImage.src = "like.png";
 
 let context = photoCanvas.getContext("2d");
 window.addEventListener("resize", handleResize);
@@ -14,8 +18,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
     .getUserMedia({
       video: {
-        width: { ideal: gifCanvas.width },
-                    height: { ideal: gifCanvas.height },
+        width: { min: gifCanvas.width },
+        height: { ideal: gifCanvas.height},
         facingMode: "environment",
       },
     })
@@ -125,7 +129,7 @@ gifler("fish.gif").frames(
     let frameColor = "#ffffff"; // Adjust as needed
     ctx.fillStyle = frameColor;
     ctx.fillRect(0, 0, gifCanvas.width, frameThickness); // Top border
-    ctx.fillRect(0, gifCanvas.height - 400, gifCanvas.width, 400); // Bottom border
+    ctx.fillRect(0, gifCanvas.height - 200, gifCanvas.width, 200); // Bottom border
     ctx.fillRect(0, 0, frameThickness, gifCanvas.height); // Left border
     ctx.fillRect(
       gifCanvas.width - frameThickness,
@@ -133,6 +137,20 @@ gifler("fish.gif").frames(
       frameThickness,
       gifCanvas.height
     ); // Right border
+
+    // Draw the logo image
+    let logoWidth = 350; // Adjust the logo size as needed
+    let logoHeight = 480;
+    let logoX = gifCanvas.width - logoWidth - 50; // Adjust the margin as needed
+    let logoY = gifCanvas.height - logoHeight - 10; // Adjust the margin as needed
+    ctx.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight);
+
+        // Draw the like image
+        let likeWidth = 100; // Adjust the logo size as needed
+        let likeHeight = 100;
+        let likeX = gifCanvas.width - likeWidth - 150; // Adjust the margin as needed
+        let likeY = gifCanvas.height - likeHeight - logoHeight - 10; // Adjust the margin as needed
+        ctx.drawImage(likeImage, likeX, likeY, likeWidth, likeHeight);
   },
   true
 );
